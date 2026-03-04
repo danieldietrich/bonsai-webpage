@@ -77,7 +77,7 @@ ${y}${f}
 `),r=t.text.slice(0,o);return`<h${n}${M(t,e)}>${A(r,e.defs,e.emitter)}</h${n}>`}function hs(t,e){const s=t.attrs&&!("blockquote"in t.attrs)?t.attrs:void 0,n=s?.openFenceEnd,o=s?.closeFenceStart;if(s!==void 0&&n!==void 0){const r=s.infoString??"",i=r?r.split(" ")[0].split("	")[0]:"",c=i?` class="language-${u(i)}"`:"",a=u(o!==void 0?t.text.slice(n+1,o):t.text.slice(n+1));return`<pre${M(t,e)}><code${c}>${a}</code></pre>`}return`<pre${M(t,e)}><code>${u(t.text)}</code></pre>`}function ms(t,e){const s=t.text.split(`
 `).map(n=>n.startsWith("    ")?n.slice(4):n.startsWith("	")?n.slice(1):n).join(`
 `);return`<pre${M(t,e)}><code>${u(s)}</code></pre>`}function gs(t,e){const s=t.attrs&&!("blockquote"in t.attrs)?t.attrs:void 0,n=s?.openFenceEnd,o=s?.closeFenceStart;let r;return n!==void 0?r=o!==void 0?t.text.slice(n+1,o):t.text.slice(n+1):r=t.text,`<div class="math-block"${M(t,e)}>${u(r)}</div>`}function ps(t,e){const s=t.text.split(`
-`);if(s.length<2)return`<p${M(t,e)}>${u(t.text)}</p>`;const n=l=>l.replace(/^\s*\|/,"").replace(/\|$/,"").split("|").map(d=>d.trim()),o=n(s[0]),i=n(s[1]).map(l=>{const d=l.startsWith(":"),f=l.endsWith(":");return d&&f?"center":f?"right":d?"left":""}),c=l=>i[l]?` style="text-align:${i[l]}"`:"";let a=`<table${M(t,e)}>
+`);if(s.length<2)return`<p${M(t,e)}>${u(t.text)}</p>`;const n=l=>l.replace(/^\s*\|/,"").replace(/\|\s*$/,"").split("|").map(d=>d.trim()),o=n(s[0]),i=n(s[1]).map(l=>{const d=l.startsWith(":"),f=l.endsWith(":");return d&&f?"center":f?"right":d?"left":""}),c=l=>i[l]?` style="text-align:${i[l]}"`:"";let a=`<table${M(t,e)}>
 <thead>
 <tr>`;for(let l=0;l<o.length;l++)a+=`<th${c(l)}>${A(o[l],e.defs,e.emitter)}</th>`;if(a+=`</tr>
 </thead>`,s.length>2){a+=`
