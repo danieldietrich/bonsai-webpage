@@ -190,7 +190,7 @@ Markdown works in here when blank lines surround it.
 </details>
 ```
 
-Scripts in a document never run.
+The preview leaves out anything that could run code or change the page: scripts, event handlers such as `onclick`, embedded frames and objects, forms, and style sheets (`<style>`). Links keep web, email, phone and relative addresses, and lose any other kind, such as `javascript:`.
 
 ### Front matter
 
