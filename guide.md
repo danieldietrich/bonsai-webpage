@@ -198,7 +198,7 @@ A block between two `---` lines at the very top of a document counts as metadata
 
 ### Line breaks
 
-Ending a line with two spaces or a backslash does **not** start a new line. Press **⇧↩** to insert a line break.
+A new line in your text is a new line in the preview, as in GitHub comments. Leave an empty line between paragraphs. Ending a line with two spaces or a backslash changes nothing. Inside a table cell, press **⇧↩** to insert a line break.
 
 ## Privacy
 
