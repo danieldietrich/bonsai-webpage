@@ -15,7 +15,7 @@ description: Write a bonsai extension: inline markdown syntax, editor behavior, 
 - `use` returns `Dispose`, install and remove any time, install order = hook order
 - view part = `(view) => Dispose | void`: registrations made while it runs are removed with it, return a `Dispose` for the rest (document listeners, timers, page listeners)
 - install for an owner (agent, plugin) → `const scope = document.scope(owner)`, `scope.add(view.use(part))`, `scope.dispose()` removes everything
-- user-triggerable action → `document.commands.register({ id, description, args, run })`, key → `editor.keys.bind('cmd b', id)`
+- user-triggerable action → `document.commands.register({ id, description, args, run })`, key → `editor.keys.bind('cmd b', id)`; acts on one view → `view: editor`, runs in the view focused last
 - react to text change → `document.on('change', ({ changes, origin }) => …)`, skip own `origin`
 - markdown structure → syntax part only, view parts read `document.ast`, `document.positionAt(offset)`, `document.isVerbatim(offset)`
 - block-level UI → write-widget skill, extensions add no block syntax

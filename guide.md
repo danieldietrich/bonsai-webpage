@@ -123,7 +123,7 @@ Invalid values are ignored.
 
 ## Clearing the document
 
-**⇧⌘⌫** empties the page. "Fresh mind" confirms that it worked.
+**⇧⌘⌫** empties the page. "Fresh mind" confirms that it worked. Whenever the document becomes empty in the preview-only view, Bonsai switches back to the editor.
 
 > Clearing also erases undo history. **You can't undo it.** Press ⌘S first if you might want the text back.
 

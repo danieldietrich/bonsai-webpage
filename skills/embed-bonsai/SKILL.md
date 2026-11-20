@@ -17,6 +17,7 @@ const preview = createPreview(previewElement, doc, { extensions: [katex], delay:
 - preview renders after every change, `delay`: debounce in milliseconds while typing; hidden preview skips, `preview.update()` when shown
 - persist → `document.on('change', ({ text, changes }) => { if (changes.length > 0) save(text); })`
 - show an offset → `view.reveal(offset)`, text on screen → `view.visibleRange()`
+- sync scrolling between views → interpolate between both views' `scrollAnchors()`: `{ offset, top }` in the element's scroll content
 - shortcut outside the editor → listen on the page, `document.commands.run(id)`
 - teardown → `view.destroy()`, document outlives its views
 - `katex` extension → install `katex`, a peer dependency
