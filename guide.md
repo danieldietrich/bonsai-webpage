@@ -94,6 +94,8 @@ Things to know:
 - Bonsai waits at most 10 seconds and loads at most 1 MB.
 - If loading fails, Bonsai starts with an empty document.
 
+Links and images in the file that point to neighboring files, such as `[Setup](docs/setup.md)` or `![Logo](img/logo.png)`, work as they do on the file's own site. Clicking such a link opens that file in Bonsai and replaces your current document. The browser's back and forward buttons take you between the files you opened this way. A file you return to may load fresh from the web, so share your edits first if you want to keep them. Reloading the page keeps the file you are on. A link you share keeps track of where the file came from, so its links still work for the person who opens it.
+
 ## Linking to a heading
 
 Every heading in the preview gets an address made from its text. `## Getting Started` becomes `#getting-started`. If two headings have the same text, the second gets `-1` added, the third `-2`, and so on.
