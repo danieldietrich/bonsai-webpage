@@ -190,7 +190,7 @@ Markdown works in here when blank lines surround it.
 </details>
 ```
 
-The preview leaves out anything that could run code or change the page: scripts, event handlers such as `onclick`, embedded frames and objects, forms, and style sheets (`<style>`). Links keep web, email, phone and relative addresses, and lose any other kind, such as `javascript:`.
+The preview shows HTML as written, including event handlers such as `onclick`, embedded frames, forms and style sheets (`<style>`); only `<script>` elements don't run. Open documents from people you trust: a shared document can run code in Bonsai.
 
 ### Front matter
 
