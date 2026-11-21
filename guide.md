@@ -167,6 +167,19 @@ $$
 
 Inline math goes between single `$` signs on one line. Block math goes between `$$` lines. To write a plain dollar sign, type `\$`.
 
+### Diagrams
+
+Write a diagram in [Mermaid](https://mermaid.js.org) syntax in a code block named `mermaid`, and the preview draws it:
+
+````markdown
+```mermaid
+flowchart LR
+    Idea --> Draft --> Done
+```
+````
+
+Flowcharts, sequence diagrams, class, state and entity relationship diagrams, Gantt charts, pie charts, mind maps and the other Mermaid diagram types work. The editor shows the source, colored. The first diagram takes a moment while Bonsai loads Mermaid. While you change a diagram, the preview keeps showing the last one it drew; if Mermaid can't read the source, Mermaid's message appears below it.
+
 ### Code
 
 Name the language after the opening fence, and Bonsai colors the code in the editor and in the preview:

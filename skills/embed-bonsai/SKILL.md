@@ -21,6 +21,7 @@ const preview = createPreview(previewElement, doc, { extensions: [katex], delay:
 - shortcut outside the editor → listen on the page, `document.commands.run(id)`
 - teardown → `view.destroy()`, document outlives its views
 - `katex` extension → install `katex`, a peer dependency
+- Mermaid diagrams → `mermaid` extension from `@bonsai/preview`, install `mermaid`, a peer dependency; colors from the `--bonsai-color-*` properties
 - code highlighting → `codeHighlight` from `@bonsai/editor` and from `@bonsai/preview`, import one under another name: `import { codeHighlight as previewCodeHighlight } from '@bonsai/preview'`; highlight.js is a peer dependency of `@bonsai/core`
 - styles → import `@bonsai/editor/editor.css`, `@bonsai/preview/preview.css`, define `--bonsai-color-text`, `-dimmed`, `-muted`, `-border`, `-link`, `-surface`, with `codeHighlight` `--bonsai-color-code-keyword`, `-string`, `-number`, `-title`, `-type`, `-comment`, `--bonsai-font-serif`, `-sans`, `-mono`, no fallback exists
 - untrusted documents → `sanitize` preview extension: https://github.com/danieldietrich/bonsai/blob/main/examples/security/sanitize.ts
