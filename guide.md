@@ -34,7 +34,9 @@ On Windows and Linux, use Ctrl wherever this guide says ⌘.
 Bonsai also completes some typing for you:
 
 - Typing `` ` ``, `(`, `[`, or `{` inserts the closing character and puts the caret between them. If you then type the closing character, Bonsai steps over the one already there.
-- Pressing ↩ after a fence that opens a block (```` ``` ````, `~~~`, or `$$`) adds the closing fence below.
+- Typing `` ` `` right before a word inserts just the one backtick. That way you can write code first and add the backticks around it afterwards.
+- Select text and type `` ` `` or `$` to turn it into code or math. Within a line you get `` `code` `` or `$math$`. If the selection spans several lines, the whole lines go into a code block or a `$$` math block.
+- Pressing ↩ after a fence that opens a block (```` ``` ````, `~~~`, or `$$`) adds the closing fence below. On the first line of a block that is already closed, ↩ just starts a new line inside it.
 - Typing `>` to finish an HTML tag such as `<mark>` adds the closing `</mark>` after the caret.
 
 ### Views and document
