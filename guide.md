@@ -144,7 +144,7 @@ Bonsai supports standard markdown (CommonMark) and the GitHub additions:
 | `# Title`, `## Section` | Headings |
 | `**bold**`, `_italic_`, `~~struck~~` | **bold**, _italic_, ~~struck~~ |
 | `` `code` `` | Inline code |
-| ```` ``` ```` on its own line | A code block |
+| ```` ``` ```` on its own line | A code block. Add a language to color it, see [Code](#code) |
 | `- item`, `1. item` | Lists. Numbered lists inside numbered lists switch to 1. → i. → a. |
 | `- [ ] task`, `- [x] done` | Task lists |
 | `> quote` | Quotes |
@@ -166,6 +166,19 @@ $$
 ```
 
 Inline math goes between single `$` signs on one line. Block math goes between `$$` lines. To write a plain dollar sign, type `\$`.
+
+### Code
+
+Name the language after the opening fence, and Bonsai colors the code in the editor and in the preview:
+
+````markdown
+```python
+def greet(name):
+    return f"Hello, {name}"
+```
+````
+
+Bonsai knows the languages GitHub colors, by the same names: `js`, `ts`, `python`, `rust`, `go`, `java`, `c`, `cpp`, `lisp`, `sql`, `json`, `yaml`, `html`, `css`, `bash`, `diff` and over a hundred more. Capital letters don't matter. The colors appear a moment after you first use a language, while Bonsai loads it. Code in a language Bonsai doesn't know stays plain.
 
 ### Footnotes and abbreviations
 

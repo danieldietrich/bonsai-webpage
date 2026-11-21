@@ -3,6 +3,7 @@
 | need | API |
 |---|---|
 | look of extension nodes | `editor.nodes.attributes(name, node => attributes)`: `class`, `title`, `aria-*`, `data-*` |
+| highlight fenced code | `editor.nodes.code((code, language) => runs)`: runs `{ text, classes }` joining to `code`, `undefined` = plain, a promise = render again when it settles |
 | highlight ranges | `editor.decorations.set(name, ranges)`, style with `::highlight(<name>)` |
 | change text | `editor.document.edit(changes, { selection, undo, origin })` |
 | read or move selection | `editor.selection.get()`, `set(range)`, `reveal()` |
