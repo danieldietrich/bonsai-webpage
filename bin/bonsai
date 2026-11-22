@@ -1,0 +1,38 @@
+#!/bin/sh
+# Opens markdown files, or markdown piped to stdin, in bonsai.md. The content
+# travels inside the link as a `#doc=` payload (gzip, base64url, JSON), nothing
+# is uploaded. Every file opens in its own browser tab.
+#
+# usage: bonsai [file ...]
+#        command | bonsai
+# install: mkdir -p ~/.local/bin && curl -fsSL https://bonsai.md/bin/bonsai -o ~/.local/bin/bonsai && chmod +x ~/.local/bin/bonsai
+
+set -eu
+
+fail() {
+    printf 'bonsai: %s\n' "$1" >&2
+    exit 1
+}
+
+# Reads markdown on stdin, opens it in bonsai.md.
+open_in_bonsai() {
+    encoded=$(jq -Rs '{content: .}' | gzip -cn | base64 | tr '+/' '-_' | tr -d '=\n')
+    open "https://bonsai.md/?#doc=$encoded"
+}
+
+command -v jq >/dev/null 2>&1 || fail 'needs jq, part of macOS 15 and later'
+
+if [ $# -eq 0 ]; then
+    [ -t 0 ] && fail 'usage: bonsai [file ...] or command | bonsai'
+    open_in_bonsai
+    exit 0
+fi
+
+# Checks every file before opening any, so a typo opens nothing.
+for file in "$@"; do
+    [ -f "$file" ] && [ -r "$file" ] || fail "cannot read $file"
+done
+
+for file in "$@"; do
+    open_in_bonsai < "$file"
+done

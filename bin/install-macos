@@ -1,0 +1,74 @@
+#!/bin/sh
+# Installs ~/Applications/Bonsai.app and makes it the default app for markdown
+# files (.md, .markdown). The app hands the files it opens to a copy of the
+# `bonsai` script inside it, which opens them in bonsai.md. Run it again to
+# update. Uses only tools that ship with macOS 15 and later.
+#
+# usage: curl -fsSL https://bonsai.md/bin/install-macos | sh
+
+set -eu
+
+app="$HOME/Applications/Bonsai.app"
+bundle_id='md.bonsai.open'
+markdown_type='net.daringfireball.markdown'
+plist="$app/Contents/Info.plist"
+plist_buddy=/usr/libexec/PlistBuddy
+lsregister=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
+bonsai_url='https://bonsai.md/bin/bonsai'
+
+fail() {
+    printf 'install-macos: %s\n' "$1" >&2
+    exit 1
+}
+
+[ "$(uname)" = Darwin ] || fail 'runs on macOS only'
+# The app runs the script with the PATH of `do shell script`: /usr/bin:/bin:/usr/sbin:/sbin
+[ -x /usr/bin/jq ] || fail 'needs /usr/bin/jq, part of macOS 15 and later'
+
+# Downloads before replacing the app, so a failed download keeps the installed one.
+bonsai_script=$(mktemp)
+trap 'rm -f "$bonsai_script"' EXIT
+curl -fsSL "$bonsai_url" -o "$bonsai_script" || fail "cannot download $bonsai_url"
+
+mkdir -p "$HOME/Applications"
+rm -rf "$app"
+osacompile -o "$app" <<'APPLESCRIPT'
+on run
+    open location "https://bonsai.md/"
+end run
+
+on open markdownFiles
+    set bonsai to quoted form of POSIX path of (path to resource "bonsai")
+    repeat with markdownFile in markdownFiles
+        do shell script bonsai & " " & quoted form of POSIX path of markdownFile
+    end repeat
+end open
+APPLESCRIPT
+
+cp "$bonsai_script" "$app/Contents/Resources/bonsai"
+chmod 755 "$app/Contents/Resources/bonsai"
+
+# osacompile leaves out the bundle id and accepts any file: claim markdown only.
+"$plist_buddy" \
+    -c "Add :CFBundleIdentifier string $bundle_id" \
+    -c 'Delete :CFBundleDocumentTypes' \
+    -c 'Add :CFBundleDocumentTypes array' \
+    -c 'Add :CFBundleDocumentTypes:0 dict' \
+    -c 'Add :CFBundleDocumentTypes:0:CFBundleTypeName string Markdown' \
+    -c 'Add :CFBundleDocumentTypes:0:CFBundleTypeRole string Viewer' \
+    -c 'Add :CFBundleDocumentTypes:0:LSHandlerRank string Default' \
+    -c 'Add :CFBundleDocumentTypes:0:LSItemContentTypes array' \
+    -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:0 string $markdown_type" \
+    "$plist"
+
+# Editing Info.plist broke the signature osacompile made: sign again, ad hoc.
+codesign --force --sign - "$app"
+"$lsregister" -f "$app"
+
+# 0xFFFFFFFF = kLSRolesAll
+status=$(osascript -l JavaScript -e "ObjC.import('CoreServices'); \$.LSSetDefaultRoleHandlerForContentType('$markdown_type', 0xFFFFFFFF, '$bundle_id')")
+if [ "$status" = 0 ]; then
+    printf 'Installed %s, the default app for markdown files.\n' "$app"
+else
+    printf 'Installed %s. Make it the default in Finder: select a .md file, Get Info, Open with: Bonsai, Change All.\n' "$app"
+fi

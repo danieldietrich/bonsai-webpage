@@ -98,6 +98,46 @@ Things to know:
 
 Links and images in the file that point to neighboring files, such as `[Setup](docs/setup.md)` or `![Logo](img/logo.png)`, work as they do on the file's own site. Clicking such a link opens that file in Bonsai and replaces your current document. The browser's back and forward buttons take you between the files you opened this way, and back to where you were in each. A link to a heading in another file, such as `[Setup](docs/setup.md#install)`, opens the file at that heading. A file you return to may load fresh from the web, so share your edits first if you want to keep them. Reloading the page keeps the file you are on. A link you share keeps track of where the file came from, so its links still work for the person who opens it.
 
+## Opening markdown files on your Mac
+
+Two small programs open the markdown files on your Mac in Bonsai. Run the commands below in the Terminal app.
+
+The `bonsai` command puts a file into a document link, like a shared link, and opens it in your browser. To install it:
+
+```text
+mkdir -p ~/.local/bin
+curl -fsSL https://bonsai.md/bin/bonsai -o ~/.local/bin/bonsai
+chmod +x ~/.local/bin/bonsai
+```
+
+If the Terminal then says `command not found: bonsai`, add `~/.local/bin` to your `PATH`. Then:
+
+```text
+bonsai notes.md
+bonsai one.md two.md
+pbpaste | bonsai
+```
+
+Each file opens in its own tab. Without a file name, `bonsai` reads the text piped to it.
+
+To open `.md` files with Bonsai when you double-click them in Finder or type `open notes.md`, install the Bonsai app:
+
+```text
+curl -fsSL https://bonsai.md/bin/install-macos | sh
+```
+
+It installs `Bonsai.app` in the `Applications` folder of your home folder and makes it the default app for markdown files. It works without the `bonsai` command. If macOS keeps your old default, select a `.md` file in Finder, choose **Get Info**, pick **Bonsai** under **Open with**, and click **Change All**.
+
+Run the commands again to update. To uninstall, pick another app for `.md` files the same way, then delete `Bonsai.app` and `~/.local/bin/bonsai`.
+
+Things to know:
+
+- It needs macOS 15 or later.
+- The file opens in preview and replaces your current document.
+- Your edits stay in the browser. Bonsai never changes the file.
+- Links and images that point to neighboring files don't work.
+- The file's text is part of the link, so it ends up in your browser history.
+
 ## Linking to a heading
 
 Every heading in the preview gets an address made from its text. `## Getting Started` becomes `#getting-started`. If two headings have the same text, the second gets `-1` added, the third `-2`, and so on.
