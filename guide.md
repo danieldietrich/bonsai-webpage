@@ -100,17 +100,18 @@ Links and images in the file that point to neighboring files, such as `[Setup](d
 
 ## Opening markdown files on your Mac
 
-Two small programs open the markdown files on your Mac in Bonsai. Run the commands below in the Terminal app.
-
-The `bonsai` command puts a file into a document link, like a shared link, and opens it in your browser. To install it:
+To open the markdown files on your Mac in Bonsai, run this in the Terminal app:
 
 ```text
-mkdir -p ~/.local/bin
-curl -fsSL https://bonsai.md/bin/bonsai -o ~/.local/bin/bonsai
-chmod +x ~/.local/bin/bonsai
+curl -fsSL https://bonsai.md/bin/install-macos | sh
 ```
 
-If the Terminal then says `command not found: bonsai`, add `~/.local/bin` to your `PATH`. Then:
+It installs two things:
+
+- `Bonsai.app` in the `Applications` folder of your home folder, the default app for markdown files. Double-click a `.md` file in Finder or type `open notes.md`, and it opens in Bonsai. If macOS keeps your old default, select a `.md` file in Finder, choose **Get Info**, pick **Bonsai** under **Open with**, and click **Change All**.
+- The `bonsai` command in `~/.local/bin`. If the installer asks you to, add that folder to your `PATH`.
+
+The `bonsai` command puts a file into a document link, like a shared link, and opens it in your browser:
 
 ```text
 bonsai notes.md
@@ -120,15 +121,7 @@ pbpaste | bonsai
 
 Each file opens in its own tab. Without a file name, `bonsai` reads the text piped to it.
 
-To open `.md` files with Bonsai when you double-click them in Finder or type `open notes.md`, install the Bonsai app:
-
-```text
-curl -fsSL https://bonsai.md/bin/install-macos | sh
-```
-
-It installs `Bonsai.app` in the `Applications` folder of your home folder and makes it the default app for markdown files. It works without the `bonsai` command. If macOS keeps your old default, select a `.md` file in Finder, choose **Get Info**, pick **Bonsai** under **Open with**, and click **Change All**.
-
-Run the commands again to update. To uninstall, pick another app for `.md` files the same way, then delete `Bonsai.app` and `~/.local/bin/bonsai`.
+Run the installer again to update. To uninstall, pick another app for `.md` files the same way, then delete `Bonsai.app` and `~/.local/bin/bonsai`.
 
 Things to know:
 

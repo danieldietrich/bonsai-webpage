@@ -1,8 +1,9 @@
 #!/bin/sh
-# Installs ~/Applications/Bonsai.app and makes it the default app for markdown
-# files (.md, .markdown). The app hands the files it opens to a copy of the
-# `bonsai` script inside it, which opens them in bonsai.md. Run it again to
-# update. Uses only tools that ship with macOS 15 and later.
+# Installs the `bonsai` command in ~/.local/bin and ~/Applications/Bonsai.app,
+# the default app for markdown files (.md, .markdown). The app hands the files
+# it opens to its own copy of the `bonsai` script, which opens them in
+# bonsai.md. Run it again to update. Uses only tools that ship with macOS 15
+# and later.
 #
 # usage: curl -fsSL https://bonsai.md/bin/install-macos | sh
 
@@ -15,6 +16,7 @@ plist="$app/Contents/Info.plist"
 plist_buddy=/usr/libexec/PlistBuddy
 lsregister=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
 bonsai_url='https://bonsai.md/bin/bonsai'
+command_dir="$HOME/.local/bin"
 
 fail() {
     printf 'install-macos: %s\n' "$1" >&2
@@ -25,10 +27,14 @@ fail() {
 # The app runs the script with the PATH of `do shell script`: /usr/bin:/bin:/usr/sbin:/sbin
 [ -x /usr/bin/jq ] || fail 'needs /usr/bin/jq, part of macOS 15 and later'
 
-# Downloads before replacing the app, so a failed download keeps the installed one.
+# Downloads before replacing anything, so a failed download keeps what is installed.
 bonsai_script=$(mktemp)
 trap 'rm -f "$bonsai_script"' EXIT
 curl -fsSL "$bonsai_url" -o "$bonsai_script" || fail "cannot download $bonsai_url"
+
+mkdir -p "$command_dir"
+cp "$bonsai_script" "$command_dir/bonsai"
+chmod 755 "$command_dir/bonsai"
 
 mkdir -p "$HOME/Applications"
 rm -rf "$app"
@@ -65,8 +71,15 @@ chmod 755 "$app/Contents/Resources/bonsai"
 codesign --force --sign - "$app"
 "$lsregister" -f "$app"
 
-# 0xFFFFFFFF = kLSRolesAll
-status=$(osascript -l JavaScript -e "ObjC.import('CoreServices'); \$.LSSetDefaultRoleHandlerForContentType('$markdown_type', 0xFFFFFFFF, '$bundle_id')")
+# 0xFFFFFFFF = kLSRolesAll. JXA passes a plain JS string as a NULL CFStringRef:
+# the strings must be NSStrings, `$(…)`, toll-free bridged to CFString.
+status=$(osascript -l JavaScript -e "ObjC.import('CoreServices'); \$.LSSetDefaultRoleHandlerForContentType(\$('$markdown_type'), 0xFFFFFFFF, \$('$bundle_id'))")
+
+printf 'Installed the bonsai command in %s.\n' "$command_dir"
+case ":$PATH:" in
+    *":$command_dir:"*) ;;
+    *) printf 'Add %s to your PATH to run it.\n' "$command_dir" ;;
+esac
 if [ "$status" = 0 ]; then
     printf 'Installed %s, the default app for markdown files.\n' "$app"
 else
