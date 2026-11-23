@@ -1,9 +1,9 @@
 #!/bin/sh
 # Installs the `bonsai` command in ~/.local/bin and ~/Applications/Bonsai.app,
-# the default app for markdown files (.md, .markdown). The app hands the files
-# it opens to its own copy of the `bonsai` script, which opens them in
-# bonsai.md. Run it again to update. Uses only tools that ship with macOS 15
-# and later.
+# the default app for markdown files (.md, .markdown). The app turns each file
+# it opens into a doc-url with its own copy of the `bonsai` script and opens
+# that in the browser. Run it again to update. Uses only tools that ship with
+# macOS 15 and later.
 #
 # usage: curl -fsSL https://bonsai.md/bin/install-macos | sh
 
@@ -46,7 +46,7 @@ end run
 on open markdownFiles
     set bonsai to quoted form of POSIX path of (path to resource "bonsai")
     repeat with markdownFile in markdownFiles
-        do shell script bonsai & " " & quoted form of POSIX path of markdownFile
+        do shell script "open \"$(" & bonsai & " c " & quoted form of POSIX path of markdownFile & ")\""
     end repeat
 end open
 APPLESCRIPT

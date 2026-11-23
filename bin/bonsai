@@ -1,38 +1,86 @@
 #!/bin/sh
-# Opens markdown files, or markdown piped to stdin, in bonsai.md. The content
-# travels inside the link as a `#doc=` payload (gzip, base64url, JSON), nothing
-# is uploaded. Every file opens in its own browser tab.
+# Turns markdown into a bonsai.md doc-url and back. The markdown travels inside
+# the link as a `#doc=` payload (gzip, base64url, JSON), nothing is uploaded.
 #
-# usage: bonsai [file ...]
-#        command | bonsai
+# usage: see `bonsai --help`
 # install: mkdir -p ~/.local/bin && curl -fsSL https://bonsai.md/bin/bonsai -o ~/.local/bin/bonsai && chmod +x ~/.local/bin/bonsai
 
 set -eu
+
+usage() {
+    cat <<'USAGE'
+usage: bonsai c [file]    print a doc-url holding the markdown of file, or of stdin
+       bonsai x [url]     print the markdown held in a doc-url, given or on stdin
+       bonsai -h|--help   print this help
+
+examples: open "$(bonsai c notes.md)"
+          pbpaste | bonsai x > notes.md
+USAGE
+}
 
 fail() {
     printf 'bonsai: %s\n' "$1" >&2
     exit 1
 }
 
-# Reads markdown on stdin, opens it in bonsai.md.
-open_in_bonsai() {
+# Reads markdown on stdin, prints its doc-url.
+create() {
     encoded=$(jq -Rs '{content: .}' | gzip -cn | base64 | tr '+/' '-_' | tr -d '=\n')
-    open "https://bonsai.md/?#doc=$encoded"
+    printf 'https://bonsai.md/?#doc=%s\n' "$encoded"
+}
+
+# Prints the markdown held in the doc-url $1, byte for byte.
+extract() {
+    case $1 in
+        *'#doc='*) ;;
+        *) fail 'not a doc-url, expected https://bonsai.md/?#doc=…' ;;
+    esac
+    # The app writes base64url without padding and reads standard base64 too.
+    payload=$(printf '%s' "${1#*#doc=}" | tr '_-' '/+' | tr -d '=')
+    case $payload in
+        '' | *[!A-Za-z0-9+/]*) fail 'cannot decode doc-url' ;;
+    esac
+    # base64 -d silently drops the bytes of an unpadded last group.
+    case $((${#payload} % 4)) in
+        1) fail 'cannot decode doc-url' ;;
+        2) payload="$payload==" ;;
+        3) payload="$payload=" ;;
+    esac
+    # Without pipefail only jq's status counts: `input` fails when nothing
+    # arrives, the parse fails when gzip stops short.
+    printf '%s' "$payload" | base64 -d 2>/dev/null | gzip -dc 2>/dev/null |
+        jq -nj 'input | if (.content | type) == "string" then .content else error end' 2>/dev/null ||
+        fail 'cannot decode doc-url'
 }
 
 command -v jq >/dev/null 2>&1 || fail 'needs jq, part of macOS 15 and later'
 
-if [ $# -eq 0 ]; then
-    [ -t 0 ] && fail 'usage: bonsai [file ...] or command | bonsai'
-    open_in_bonsai
-    exit 0
-fi
-
-# Checks every file before opening any, so a typo opens nothing.
-for file in "$@"; do
-    [ -f "$file" ] && [ -r "$file" ] || fail "cannot read $file"
-done
-
-for file in "$@"; do
-    open_in_bonsai < "$file"
-done
+case ${1-} in
+    c)
+        [ $# -le 2 ] || fail 'usage: bonsai c [file]'
+        if [ $# -eq 2 ]; then
+            [ -f "$2" ] && [ -r "$2" ] || fail "cannot read $2"
+            create < "$2"
+        else
+            [ -t 0 ] && fail 'usage: bonsai c [file], or pipe markdown to it'
+            create
+        fi
+        ;;
+    x)
+        [ $# -le 2 ] || fail 'usage: bonsai x [url]'
+        if [ $# -eq 2 ]; then
+            extract "$2"
+        else
+            [ -t 0 ] && fail 'usage: bonsai x [url], or pipe a doc-url to it'
+            # $(…) drops the trailing newline of a piped url.
+            extract "$(cat)"
+        fi
+        ;;
+    -h | --help)
+        usage
+        ;;
+    *)
+        usage >&2
+        exit 1
+        ;;
+esac

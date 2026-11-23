@@ -111,15 +111,17 @@ It installs two things:
 - `Bonsai.app` in the `Applications` folder of your home folder, the default app for markdown files. Double-click a `.md` file in Finder or type `open notes.md`, and it opens in Bonsai. If macOS keeps your old default, select a `.md` file in Finder, choose **Get Info**, pick **Bonsai** under **Open with**, and click **Change All**.
 - The `bonsai` command in `~/.local/bin`. If the installer asks you to, add that folder to your `PATH`.
 
-The `bonsai` command puts a file into a document link, like a shared link, and opens it in your browser:
+The `bonsai` command turns markdown into a document link, like a shared link, and back:
 
 ```text
-bonsai notes.md
-bonsai one.md two.md
-pbpaste | bonsai
+bonsai c notes.md                     prints the link to notes.md
+open "$(bonsai c notes.md)"           opens notes.md in your browser
+pbpaste | bonsai c | pbcopy           turns copied text into a link
+bonsai x 'https://bonsai.md/?#doc=…'  prints the text of a link
+pbpaste | bonsai x > notes.md         saves a copied link as notes.md
 ```
 
-Each file opens in its own tab. Without a file name, `bonsai` reads the text piped to it.
+Without a file name, `bonsai c` reads the text piped to it. Without a link, `bonsai x` reads the link piped to it. `bonsai x` works with shared links and links made by `bonsai c`, not with links to files on the web. `bonsai --help` lists the commands.
 
 Run the installer again to update. To uninstall, pick another app for `.md` files the same way, then delete `Bonsai.app` and `~/.local/bin/bonsai`.
 
