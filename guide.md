@@ -48,6 +48,8 @@ Bonsai also completes some typing for you:
 | ⌘S | Copy a share link for the document |
 | ⇧⌘⌫ | Clear the document |
 
+Forgot a shortcut? Hold ⌘ for a second, with or without ⇧, and this list shows up. Let go of ⌘ or press any other key, and it goes away.
+
 ## Views
 
 Bonsai has three views. Press ⇧⌘P to go to the next one.
