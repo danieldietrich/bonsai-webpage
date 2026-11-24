@@ -48,7 +48,7 @@ Bonsai also completes some typing for you:
 | ⌘S | Copy a share link for the document |
 | ⇧⌘⌫ | Clear the document |
 
-Forgot a shortcut? Hold ⌘ for a second, with or without ⇧, and this list shows up. Let go of ⌘ or press any other key, and it goes away.
+Forgot a shortcut? Hold ⌘ for a second, with or without ⇧, and this list shows up. The keys you are holding light up, so press ⇧ to see which shortcuts use it. Let go of ⌘ or press any other key, and it goes away.
 
 ## Views
 
