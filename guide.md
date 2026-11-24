@@ -8,7 +8,7 @@ Bonsai is a markdown editor that runs in your browser at <https://bonsai.md>. It
 2. Type. The logo fades away once you start.
 3. Close the tab whenever you like. Bonsai saves as you type, and your text, caret position, and view are back the next time you open the page.
 
-Clicking the logo on an empty page opens this guide. When you're done reading, press ⇧⌘⌫ to clear the page and start writing. If you forget a shortcut, hold ⌘ for a second and Bonsai lists the most useful ones.
+Clicking the logo on an empty page opens this guide. When you're done reading, press ⇧⌘⌫ to clear the page and start writing. If you forget a shortcut, hold ⌘ for a moment and Bonsai lists the most useful ones.
 
 Your document is stored only in this browser. There is no server copy and no sync between devices. To move a document to another device or person, share a link (see [Sharing](#sharing)).
 
@@ -48,7 +48,7 @@ Bonsai also completes some typing for you:
 | ⌘S | Copy a share link for the document |
 | ⇧⌘⌫ | Clear the document |
 
-Forgot a shortcut? Hold ⌘ for a second, with or without ⇧, and this list shows up. The keys you are holding light up, so press ⇧ to see which shortcuts use it. Let go of ⌘ or press any other key, and it goes away.
+Forgot a shortcut? Hold ⌘ for a moment, with or without ⇧, and this list shows up. The keys you are holding light up, so press ⇧ to see which shortcuts use it. Let go of ⌘ or press any other key, and it goes away.
 
 ## Views
 
