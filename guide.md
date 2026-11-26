@@ -200,9 +200,11 @@ Euler: $e^{i\pi} + 1 = 0$
 $$
 \int_0^1 x^2 \, dx = \frac{1}{3}
 $$
+
+$$1, 1, 2, 3, 5, 8, \dots$$
 ```
 
-Inline math goes between single `$` signs on one line. Block math goes between `$$` lines. To write a plain dollar sign, type `\$`.
+Inline math goes between single `$` signs on one line. Block math goes between `$$` lines, or between `$$` and `$$` on a line of its own. To write a plain dollar sign, type `\$`.
 
 ### Diagrams
 
