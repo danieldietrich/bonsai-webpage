@@ -204,7 +204,7 @@ $$
 $$1, 1, 2, 3, 5, 8, \dots$$
 ```
 
-Inline math goes between single `$` signs on one line. Block math goes between `$$` lines, between `$$` and `$$` on a line of its own, or from a line starting with `$$` to a line ending with `$$`, without a blank line between them. To write a plain dollar sign, type `\$`.
+Inline math goes between single `$` signs on one line. Block math goes between `$$` lines, between `$$` and `$$` on a line of its own, or from a line starting with `$$` to a line ending with `$$`, without a blank line between them. To write a plain dollar sign, type `\$`. Code wins over math: a dollar sign before `` `$x$` `` on the same line doesn't pull the code into math.
 
 ### Diagrams
 
